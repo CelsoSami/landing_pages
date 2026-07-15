@@ -114,7 +114,7 @@ body {
     width: 40px;
     height: 40px;
     background: transparent;
-    border: 2px solid #0ef;
+    border: 2px solid #AF6000FF;
     border-radius: 50%;
     font-size: 20px;
     color: #0ef;
@@ -128,15 +128,15 @@ body {
 }
 
 .home-sci a:hover {
-    background: #0ef;
+    background: #AF6000FF;
     color: #081b29;
-    box-shadow: 0 0 20px #0ef;
+    box-shadow: 0 0 20px #AF6000FF;
 }
 
 .btn-box {
     display: inline-block;
     padding: 12px 28px;
-    # background: #0ef;
+    /*background: #0ef;*/
     background: #AF6000FF;
     border-radius: 40px;
     font-size: 16px;
