@@ -226,3 +226,9 @@ body{
 
     z-index:-1;
 }
+
+.header,
+.home {
+    position: relative;
+    z-index: 2;
+}
