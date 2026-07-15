@@ -56,7 +56,7 @@ body {
     width: 100%;
     justify-content: space-between;
     height: 100vh;
-    background-image: url("./capa_p");
+    background: url("./capa_p.svg") center center / cover no-repeat;
     background-size: cover;
     background-position: center;
     display: flex;
