@@ -152,12 +152,12 @@ body {
 }
 
 .btn-box:hover {
-    box-shadow: 0 0 5px cyan,
-        0 0 25px cyan, 0 0 50px cyan,
-        0 0 100px cyan, 0 0 200px cyan
+    box-shadow: 0 0 5px #AF6000FF,
+        0 0 25px #AF6000FF, 0 0 50px #AF6000FF,
+        0 0 100px #AF6000FF, 0 0 200px #AF6000FF
 }
 
-
+#cyan
 @keyframes slideRight {
     0% {
         transform: translateX(-100px);
