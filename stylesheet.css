@@ -62,7 +62,7 @@ body{
     width: 100%;
     justify-content: space-between;
     height: 100vh;
-    background: url("./capa_p.svg") center center / cover no-repeat;
+    /*background: url("./capa_p.svg") center center / cover no-repeat;*/
     /*background-size: cover;*/
     display: flex;
     align-items: center;
