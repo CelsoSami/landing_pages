@@ -1,9 +1,9 @@
 var typed = new Typed(".text", {
-    strings: ["Data Scientist",
-            "BI Specialist",
-            "Analytics Engineer",
-            "End-to-end Developer",
-            "Machine Learning Enthusiast"],
+    strings: [
+        "a Data Scientist",
+        "a BI Specialist",
+        "an End-to-end Developer",
+        "a Machine Learning Enthusiast"],
     typeSpeed: 100,
     backSpeed: 100,
     backDelay: 1000,
