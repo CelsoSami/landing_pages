@@ -136,7 +136,8 @@ body {
 .btn-box {
     display: inline-block;
     padding: 12px 28px;
-    background: #0ef;
+    # background: #0ef;
+    background: #B98B5F;
     border-radius: 40px;
     font-size: 16px;
     color: #081b29;
@@ -151,10 +152,18 @@ body {
 }
 
 .btn-box:hover {
-    box-shadow: 0 0 5px cyan,
-        0 0 25px cyan, 0 0 50px cyan,
-        0 0 100px cyan, 0 0 200px cyan
+    box-shadow:
+        0 0 10px #B98B5F,
+        0 0 30px #B98B5F,
+        0 0 60px #B98B5F,
+        0 0 120px #B98B5F;
 }
+
+# .btn-box:hover {
+#     box-shadow: 0 0 5px cyan,
+#         0 0 25px cyan, 0 0 50px cyan,
+#         0 0 100px cyan, 0 0 200px cyan
+# }
 
 
 @keyframes slideRight {
