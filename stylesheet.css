@@ -62,13 +62,12 @@ body{
     width: 100%;
     justify-content: space-between;
     height: 100vh;
-    background: none;
-    /*background: url("./capa_p.svg") center center / cover no-repeat;
-    background-size: cover;*/
-    background-position: center;
+    background: url("./capa_p.svg") center center / cover no-repeat;
+    /*background-size: cover;*/
     display: flex;
     align-items: center;
     padding: 70px 10% 0;
+    z-index: 2;
 }
 
 .home-content {
@@ -216,7 +215,7 @@ body{
     }
 }
 
-#particles-js{
+#particles.js{
     position: fixed;
     top:0;
     left:0;
