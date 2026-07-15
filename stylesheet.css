@@ -155,10 +155,9 @@ body {
 
 .btn-box:hover {
     box-shadow:
-        0 0 10px #AF6000FF,
-        0 0 30px #AF6000FF,
-        0 0 60px #AF6000FF,
-        0 0 120px #AF6000FF;
+        0 0 5px #AF6000FF,
+        0 0 25px #AF6000FF,
+        0 0 100px #AF6000FF
 }
 
 # .btn-box:hover {
