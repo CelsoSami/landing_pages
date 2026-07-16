@@ -59,7 +59,7 @@ body{
 }
 
 .navbar a:hover {
-    color: #AF6000FF;
+    color: #483BFF;
 }
 
 .home {
@@ -123,10 +123,10 @@ body{
     width: 40px;
     height: 40px;
     background: transparent;
-    border: 2px solid #AF6000FF;
+    border: 2px solid #483BFF;
     border-radius: 50%;
     font-size: 20px;
-    color: #AF6000FF;
+    color: #483BFF;
     text-decoration: none;
     transition: .5s ease;
     opacity: 0;
@@ -137,16 +137,16 @@ body{
 }
 
 .home-sci a:hover {
-    background: #AF6000FF;
+    background: #483BFF;
     color: #081b29;
-    box-shadow: 0 0 20px #AF6000FF;
+    box-shadow: 0 0 20px #483BFF;
 }
 
 .btn-box {
     display: inline-block;
     padding: 12px 28px;
     /*background: #0ef;*/
-    background: #AF6000FF;
+    background: #483BFF;
     border-radius: 40px;
     font-size: 16px;
     color: #081b29;
@@ -156,14 +156,14 @@ body{
     opacity: 0;
     animation: slideTop 1s ease forwards;
     animation-delay: 2s;
-    box-shadow: 0 0 5px #AF6000FF,
-        0 0 25px #AF6000FF
+    box-shadow: 0 0 5px #483BFF,
+        0 0 25px #483BFF
 }
 
 .btn-box:hover {
-    box-shadow: 0 0 5px #AF6000FF,
-        0 0 25px #AF6000FF, 0 0 50px #AF6000FF,
-        0 0 100px #AF6000FF, 0 0 200px #AF6000FF
+    box-shadow: 0 0 5px #483BFF,
+        0 0 25px #AF6000FF, 0 0 50px #483BFF,
+        0 0 100px #AF6000FF, 0 0 200px #483BFF
 }
 
 /*cyan
