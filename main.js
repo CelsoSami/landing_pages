@@ -11,10 +11,14 @@ var typed = new Typed(".text", {
 });
 
 const bodySection = document.querySelector("#body-1");
-
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if(entry.isIntersecting){bodySection.classList.add("animate-svg");}else{bodySection.classList.remove("animate-svg");
-        }});
-    },{threshold:0.35});
+        }});},{threshold:0.35});
 observer.observe(bodySection);
+
+const aboutSection = document.querySelector('.about-container');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting){aboutSection.classList.add('show');}});}, {threshold: 0.3});
+observer.observe(aboutSection);
