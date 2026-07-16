@@ -9,3 +9,12 @@ var typed = new Typed(".text", {
     backDelay: 1000,
     loop: true
 });
+
+const bodySection = document.querySelector("#body-1");
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting){bodySection.classList.add("animate-svg");}else{bodySection.classList.remove("animate-svg");
+        }});
+    },{threshold:0.35});
+observer.observe(bodySection);
