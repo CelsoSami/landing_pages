@@ -29,8 +29,8 @@ html{
     z-index: 1000;
     transition: background .3s ease;
     box-shadow:
-        0 4px 20px rgba(0, 0, 0, 0.35),
-        0 0 30px rgba(72, 59, 255, 0.15);
+        0 4px 20px rgba(120, 120, 120, 0.25),
+        0 0 30px rgba(72, 59, 255, 0.10);
 }
 
 .logo {
