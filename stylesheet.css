@@ -167,7 +167,6 @@ body{
 
 .body-section{
     width:100%;
-    min-height:100vh;
     background-image:url("./body_1.svg");
     background-size:100% auto;
     background-position:top center;
