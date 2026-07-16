@@ -169,7 +169,56 @@ html{
         0 0 100px #483BFF, 0 0 200px #483BFF
 }
 
-.body-section{
+.about-section{
+    width:100%;
+    min-height:100vh;
+    background:#bcbcc7;
+    display:flex;
+    align-items:center;
+    padding:80px 10%;
+}
+
+
+.about-container{width:100%;}
+
+.about-container h2{
+    color:#000;
+    font-size:38px;
+    font-weight:700;
+    margin-bottom:45px;
+}
+
+
+.about-content{
+    display:flex;
+    gap:35px;
+}
+
+
+.about-line{
+    width:3px;
+    background:#483BFF;
+    min-height:370px;
+}
+
+.about-text{max-width:1600px;}
+
+.about-text p{
+    color:#111;
+    font-size:22px;
+    line-height:1.25;
+    margin-bottom:25px;
+    font-weight:400;
+}
+/* animação */
+
+.about-container{
+    opacity:0;
+    animation:slideLeft 1s ease forwards;
+    animation-delay:.3s;
+}
+
+/*.body-section{
     width:100%;
     background-image:url("./body_1.svg");
     background-size:100% auto;
@@ -181,7 +230,7 @@ html{
     display:block;
     width:100vw;
     height:auto;
-}
+}*/
 
 /*cyan
 #0ef*/
@@ -235,17 +284,9 @@ html{
     }
 }
 
-/* ==========================================
-   TABLETS
-========================================== */
-
 @media (max-width: 1024px){
 
 }
-
-/* ==========================================
-   CELULARES
-========================================== */
 
 @media (max-width:768px){
 
@@ -284,10 +325,5 @@ html{
     }
 }
 
-/* ==========================================
-   CELULARES PEQUENOS
-========================================== */
-
 @media (max-width: 480px){
-
 }
