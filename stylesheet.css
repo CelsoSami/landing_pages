@@ -21,11 +21,16 @@ body{
     left: 0;
     width: 100%;
     padding: 20px 10%;
-    background: transparent;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    /*background: transparent;*/
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 100;
+    /*z-index: 100;*/
+    z-index: 1000;
+    transition: background .3s ease;
 }
 
 .logo {
