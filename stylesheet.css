@@ -215,6 +215,9 @@ html{
 
 .about-container{
     opacity:0;
+}
+
+.about-container.show{
     animation:slideLeft 1s ease forwards;
     animation-delay:.3s;
 }
