@@ -197,9 +197,9 @@ html{
 
 
 .about-line{
-    width:4px;
+    width:5px;
     background:#483BFF;
-    min-height:350px;
+    min-height:320px;
 }
 
 .about-text{max-width:1600px;}
