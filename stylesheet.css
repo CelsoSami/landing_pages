@@ -168,19 +168,23 @@ body{
 .body-section{
     width:100%;
     min-height:100vh;
-
     display:flex;
     justify-content:center;
     align-items:center;
-
     overflow:hidden;
 }
 
-.body-section svg{
+.body-section img{
+    display:block;
+    width:100vw;
+    height:auto;
+}
+
+/*.body-section svg{
     width:100%;
     height:auto;
     display:block;
-}
+}*/
 
 /*cyan
 #0ef*/
