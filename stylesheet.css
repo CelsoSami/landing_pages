@@ -7,12 +7,7 @@
 
 body{
     color:#ededed;
-
-    background-image:url("./capa_pic.svg");
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-    background-attachment:fixed;
+    background:#000;
 }
 
 .header {
@@ -62,15 +57,19 @@ body{
     color: #483BFF;
 }
 
-.home {
-    position: relative;
-    width: 100%;
-    justify-content: space-between;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 70px 10% 0;
-    z-index: 2;
+.home{
+    position:relative;
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:70px 10% 0;
+    background-image:url("./capa_pic.svg");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    overflow:hidden;
 }
 
 .home-content {
