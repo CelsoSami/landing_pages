@@ -183,7 +183,7 @@ html{
 
 .about-container h2{
     color:#000;
-    font-size:38px;
+    font-size:30px;
     font-weight:700;
     margin-bottom:45px;
 }
@@ -205,7 +205,7 @@ html{
 
 .about-text p{
     color:#111;
-    font-size:22px;
+    font-size:14px;
     line-height:1.25;
     margin-bottom:25px;
     font-weight:400;
