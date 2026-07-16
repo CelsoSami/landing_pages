@@ -264,8 +264,12 @@ html{
     background:
     linear-gradient(
         180deg,
-        transparent 50%,
-        #000 100%);
+        rgba(128,128,128,0) 40%,
+        rgba(128,128,128,0.45) 75%,
+        rgba(80,80,80,0.65) 100%
+    );
+        /*transparent 50%,
+        #000 100%);*/
 }
 
 .project-data{
