@@ -396,28 +396,6 @@ html{
 }
 
 .work-card h3{
-    color:#000;
-    font-size:26px;
-    margin-bottom:20px;
-    transition:color .35s ease;
-}
-
-.work-card p{
-    color:#8F8E91FF;
-    font-size:17px;
-    line-height:1.5;
-}
-
-.work-card:hover{
-    color:#8F8E91FF;
-    transform:translateY(-10px);
-    box-shadow:
-        0 20px 40px rgba(113,104,235,.35),
-        0 30px 60px rgba(113,104,235,.15);
-}
-
-/*
-.work-card h3{
     color:#7168EBFF;
     font-size:26px;
     margin-bottom:20px;
@@ -434,7 +412,7 @@ html{
     box-shadow:
         0 20px 40px rgba(113,104,235,.35),
         0 30px 60px rgba(113,104,235,.15);
-}*/
+}
 
 /*cyan
 #0ef*/
