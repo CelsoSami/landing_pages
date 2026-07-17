@@ -374,13 +374,13 @@ html{
 
 .work-cards{
     display:grid;
-    grid-template-columns:
-    repeat(auto-fit,minmax(300px,1fr));
+    grid-template-columns:repeat(3,1fr);
     gap:35px;
+    justify-items:center;
 }
 
 .work-card{
-    background:
+    width:100%;
     rgba(255,255,255,0.08);
     border:1px solid rgba(255,255,255,0.15);
     backdrop-filter:blur(12px);
@@ -506,5 +506,8 @@ html{
     }
 }
 
-@media (max-width: 480px){
-}
+@media (max-width: 480px){}
+
+@media(max-width:900px){.work-cards{grid-template-columns:repeat(2,1fr);}}
+
+@media(max-width:600px){.work-cards{grid-template-columns:1fr;}}
