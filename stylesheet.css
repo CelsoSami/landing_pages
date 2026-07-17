@@ -493,6 +493,50 @@ html{
     color:#7168EBFF;
 }
 
+/* ===========================
+   Language Switch
+=========================== */
+
+.language-switch{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:6px 10px;
+
+    border:1px solid rgba(255,255,255,.25);
+    border-radius:999px;
+
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(12px);
+}
+
+.language-switch a{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    text-decoration:none;
+    color:#000;
+    font-size:14px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.language-switch a:hover{
+    color:#7168EBFF;
+}
+
+.language-divider{
+    width:1px;
+    height:18px;
+    background:rgba(0,0,0,.25);
+}
+
+.active-language{
+    color:#7168EBFF !important;
+}
+
+
 
 @keyframes slideRight {
     0% {
