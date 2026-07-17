@@ -354,12 +354,12 @@ html{
 .work-section{
     width:100%;
     min-height:100vh;
-    background:#000;
+    background:#D2CFDF;
     padding:90px 10%;
 }
 
 .work-container h2{
-    color:#fff;
+    color:#000;
     font-size:30px;
     margin-bottom:15px;
     text-align:center;
