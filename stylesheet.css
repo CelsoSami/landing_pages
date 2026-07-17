@@ -225,12 +225,12 @@ html{
 .portfolio-section{
     width:100%;
     min-height:100vh;
-    background:#BDBBC8;
+    background:#bab8c3;
     padding:80px 10%;
 }
 
 .portfolio-container h2{
-    color:#fff;
+    color:#000;
     font-size:30px;
     margin-bottom:45px;
 }
