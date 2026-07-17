@@ -351,6 +351,106 @@ html{
     --project-color:#ff0095;
 }
 
+/* ==============================
+   WHAT I WORK ON
+============================== */
+
+
+.work-section{
+
+    width:100%;
+    min-height:100vh;
+    background:#000;
+    padding:90px 10%;
+
+}
+
+
+.work-container h2{
+
+    color:#fff;
+    font-size:30px;
+    margin-bottom:15px;
+
+}
+
+
+.work-subtitle{
+
+    color:#aaa;
+    font-size:20px;
+    margin-bottom:50px;
+
+}
+
+
+
+.work-cards{
+
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(300px,1fr));
+
+    gap:35px;
+
+}
+
+
+
+.work-card{
+
+    background:
+    rgba(255,255,255,0.08);
+
+    border:1px solid rgba(255,255,255,0.15);
+
+    backdrop-filter:blur(12px);
+
+    border-radius:25px;
+
+    padding:35px;
+
+    transition:.4s;
+
+    min-height:240px;
+
+}
+
+
+
+.work-card h3{
+
+    color:#7168EBFF;
+
+    font-size:26px;
+
+    margin-bottom:20px;
+
+}
+
+
+
+.work-card p{
+
+    color:#ddd;
+
+    font-size:17px;
+
+    line-height:1.5;
+
+}
+
+
+
+.work-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:
+    0 0 25px rgba(113,104,235,.35);
+
+}
+
 /*cyan
 #0ef*/
 
