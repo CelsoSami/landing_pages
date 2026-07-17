@@ -362,12 +362,14 @@ html{
     color:#fff;
     font-size:30px;
     margin-bottom:15px;
+    text-align:center;
 }
 
 .work-subtitle{
     color:#aaa;
     font-size:20px;
     margin-bottom:50px;
+    text-align:center;
 }
 
 .work-cards{
