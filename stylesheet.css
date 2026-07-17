@@ -408,8 +408,7 @@ html{
     line-height:1.5;
 }
 
-.work-card:hover h3,
-.work-card:hover p{
+.work-card:hover{
     color:#8F8E91FF;
     transform:translateY(-10px);
     box-shadow:
