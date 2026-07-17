@@ -382,7 +382,7 @@ html{
 .work-card{
     width:100%;
     rgba(255,255,255,0.08);
-    border:2px solid #8F8E91FF;
+    border:2px solid #BFBFBFFF;
     backdrop-filter:blur(12px);
     border-radius:25px;
     padding:35px;
