@@ -436,6 +436,7 @@ html{
 
 .contact-container{
     width:100%;
+    text-align:center;
 }
 
 .contact-container h2{
@@ -443,6 +444,7 @@ html{
     font-size:30px;
     font-weight:700;
     margin-bottom:45px;
+    text-align:center;
 }
 
 .contact-content{
