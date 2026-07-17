@@ -354,7 +354,7 @@ html{
 .work-section{
     width:100%;
     min-height:100vh;
-    background:#CCC8DAFF;
+    background:#BFBDC8FF;
     padding:90px 10%;
 }
 
@@ -366,7 +366,7 @@ html{
 }
 
 .work-subtitle{
-    color:#aaa;
+    color:#A09FA4FF;
     font-size:20px;
     margin-bottom:50px;
     text-align:center;
@@ -402,7 +402,7 @@ html{
 }
 
 .work-card p{
-    color:#ddd;
+    color:#A09FA4FF;
     font-size:17px;
     line-height:1.5;
 }
