@@ -382,7 +382,7 @@ html{
 .work-card{
     width:100%;
     rgba(255,255,255,0.08);
-    border:2px solid #BFBFBFFF;
+    border:2px solid #ADADADFF;
     backdrop-filter:blur(12px);
     border-radius:25px;
     padding:35px;
@@ -396,9 +396,14 @@ html{
 }
 
 .work-card h3{
-    color:#7168EBFF;
+    color:#000;
     font-size:26px;
     margin-bottom:20px;
+    transition:color .35s ease;
+}
+
+.work-card:hover h3{
+    color:#7168EBFF;
 }
 
 .work-card p{
