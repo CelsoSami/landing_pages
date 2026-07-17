@@ -425,6 +425,74 @@ html{
 /*cyan
 #0ef*/
 
+.contact-section{
+    width:100%;
+    min-height:60vh;
+    background:#bab8c3;
+    display:flex;
+    align-items:center;
+    padding:80px 10%;
+}
+
+.contact-container{
+    width:100%;
+}
+
+.contact-container h2{
+    color:#000;
+    font-size:30px;
+    font-weight:700;
+    margin-bottom:45px;
+}
+
+.contact-content{
+    display:flex;
+    gap:35px;
+}
+
+.contact-line{
+    width:5px;
+    background:#7168EBFF;
+    min-height:260px;
+}
+
+.contact-info{
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+}
+
+.contact-item{
+    display:flex;
+    align-items:flex-start;
+    gap:20px;
+}
+
+.contact-item i{
+    font-size:34px;
+    color:#7168EBFF;
+    margin-top:4px;
+}
+
+.contact-item h3{
+    color:#000;
+    font-size:22px;
+    margin-bottom:6px;
+}
+
+.contact-item a,
+.contact-item p{
+    color:#111;
+    font-size:18px;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.contact-item a:hover{
+    color:#7168EBFF;
+}
+
+
 @keyframes slideRight {
     0% {
         transform: translateX(-100px);
