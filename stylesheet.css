@@ -172,7 +172,7 @@ html{
 
 .about-section{
     width:100%;
-    min-height:100vh;
+    min-height:70vh;
     background:#bab8c3;
     display:flex;
     align-items:center;
