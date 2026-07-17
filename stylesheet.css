@@ -59,7 +59,7 @@ html{
 }
 
 .navbar a:hover {
-    color: #483BFF;
+    color: #7168EBFF;
 }
 
 .home{
@@ -98,7 +98,7 @@ html{
 }
 
 .home-content h3 span {
-    color: #483BFF;
+    color: #7168EBFF;
 }
 
 .home-content h1 {
@@ -127,10 +127,10 @@ html{
     width: 40px;
     height: 40px;
     background: transparent;
-    border: 2px solid #483BFF;
+    border: 2px solid #7168EBFF;
     border-radius: 50%;
     font-size: 20px;
-    color: #483BFF;
+    color: #7168EBFF;
     text-decoration: none;
     transition: .5s ease;
     opacity: 0;
@@ -141,16 +141,16 @@ html{
 }
 
 .home-sci a:hover {
-    background: #483BFF;
+    background: #7168EBFF;
     color: #081b29;
-    box-shadow: 0 0 20px #483BFF;
+    box-shadow: 0 0 20px #7168EBFF;
 }
 
 .btn-box {
     display: inline-block;
     padding: 12px 28px;
     /*background: #0ef;*/
-    background: #483BFF;
+    background: #7168EBFF;
     border-radius: 40px;
     font-size: 16px;
     color: #081b29;
@@ -160,14 +160,14 @@ html{
     opacity: 0;
     animation: slideTop 1s ease forwards;
     animation-delay: 2s;
-    box-shadow: 0 0 5px #483BFF,
-        0 0 25px #483BFF
+    box-shadow: 0 0 5px #7168EBFF,
+        0 0 25px #7168EBFF
 }
 
 .btn-box:hover {
-    box-shadow: 0 0 5px #483BFF,
-        0 0 25px #483BFF, 0 0 50px #483BFF,
-        0 0 100px #483BFF, 0 0 200px #483BFF
+    box-shadow: 0 0 5px #7168EBFF,
+        0 0 25px #7168EBFF, 0 0 50px #7168EBFF,
+        0 0 100px #7168EBFF, 0 0 200px #7168EBFF
 }
 
 .about-section{
