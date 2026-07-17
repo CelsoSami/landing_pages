@@ -198,7 +198,7 @@ html{
 
 .about-line{
     width:5px;
-    background:#483BFF;
+    background:#7168EBFF;
     min-height:320px;
 }
 
@@ -292,7 +292,7 @@ html{
     border-radius:50%;
     display:grid;
     place-items:center;
-    background:#483BFF;
+    background:#7168EBFF;
     color:#000;
     font-size:28px;
     box-shadow:
