@@ -388,6 +388,11 @@ html{
     padding:35px;
     transition:.4s;
     min-height:240px;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
 }
 
 .work-card h3{
