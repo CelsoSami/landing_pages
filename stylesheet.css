@@ -432,11 +432,11 @@ html{
     display:flex;
     align-items:center;
     padding:80px 10%;
+    text-align:center;
 }
 
 .contact-container{
     width:100%;
-    text-align:center;
 }
 
 .contact-container h2{
