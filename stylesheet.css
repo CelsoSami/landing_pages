@@ -392,7 +392,9 @@ html{
     display:flex;
     flex-direction:column;
     justify-content:center;
-    align-items:center;
+    align-items:center;    
+    box-shadow:
+        0 4px 10px rgba(188,188,188,.20);
 }
 
 .work-card h3{
