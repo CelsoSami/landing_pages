@@ -33,6 +33,12 @@ html{
         0 0 30px rgba(72, 59, 255, 0.10);
 }
 
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:30px;
+}
+
 .logo {
     position: relative;
     font-size: 25px;
