@@ -382,7 +382,7 @@ html{
 .work-card{
     width:100%;
     rgba(255,255,255,0.08);
-    border:1px solid rgba(255,255,255,0.15);
+    border:2px solid #8F8E91FF;
     backdrop-filter:blur(12px);
     border-radius:25px;
     padding:35px;
@@ -410,7 +410,8 @@ html{
 .work-card:hover{
     transform:translateY(-10px);
     box-shadow:
-    0 0 25px rgba(113,104,235,.35);
+        0 20px 40px rgba(113,104,235,.35),
+        0 30px 60px rgba(113,104,235,.15);
 }
 
 /*cyan
