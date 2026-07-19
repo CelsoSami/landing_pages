@@ -116,6 +116,21 @@
                     });
                 });
             }
+            
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('show');
+                        }, index * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            galleryItems.forEach(item => observer.observe(item));
+            }
         });
     </script>
 </body>
