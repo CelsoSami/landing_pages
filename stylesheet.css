@@ -189,11 +189,10 @@ body {
 }
 
 .home-content {
-    max-width: 650px;
+    flex: 0 1 600px;
     min-width: 0;
     position: relative;
     z-index: 1;
-    flex-shrink: 1;
 }
 
 .home-content .tag {
@@ -263,7 +262,7 @@ body {
     align-items: center;
     justify-content: center;
     justify-content: flex-end;
-    flex-shrink: 0;
+    flex: 0 0 320px;
     opacity: 0;
     animation: fadeSlideLeft .9s ease forwards;
     animation-delay: 1s;
@@ -1043,7 +1042,7 @@ body {
     .home-content .typed-line { font-size: 20px; }
     .home-content p { font-size: 15px; }
     .home-sci { justify-content: center; }
-    .home-photo { margin-top: 50px; justify-content: center; }
+    .home-photo { flex: none; margin-top: 50px; justify-content: center; }
     .photo-wrapper { width: 240px; height: 221px; }
     
     .section-header h2 { font-size: 28px; }
