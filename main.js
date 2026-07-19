@@ -95,5 +95,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+    
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = contactForm.querySelector('[name="name"]').value;
+            const email = contactForm.querySelector('[name="email"]').value;
+            const subject = contactForm.querySelector('[name="subject"]').value || 'Contact from Portfolio';
+            const message = contactForm.querySelector('[name="message"]').value;
+            const body = `Name: ${name}%0AEmail: ${email}%0A%0A${encodeURIComponent(message)}`;
+            window.location.href = `mailto:celso_scjunior@hotmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+        });
+    }
 
 });
