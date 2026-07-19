@@ -165,6 +165,8 @@ body {
     min-height: 100vh;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 60px;
     padding: 100px 8% 0;
     background:
         radial-gradient(ellipse 60% 50% at 70% 50%, rgba(0, 212, 255, 0.04) 0%, transparent 70%),
@@ -257,6 +259,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
     opacity: 0;
     animation: fadeSlideLeft .9s ease forwards;
     animation-delay: 1s;
@@ -264,25 +268,25 @@ body {
 
 .photo-wrapper {
     position: relative;
-    width: 340px;
-    height: 340px;
+    width: 320px;
+    height: 295px;
 }
 
 .photo-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 50%;
-    border: 2px solid rgba(0, 212, 255, 0.2);
+    border-radius: 18px;
+    border: 2px solid rgba(0, 212, 255, 0.25);
     position: relative;
     z-index: 2;
 }
 
 .photo-glow {
     position: absolute;
-    inset: -15px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
+    inset: -18px;
+    border-radius: 26px;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.12) 0%, transparent 70%);
     z-index: 1;
     animation: glow 4s ease-in-out infinite;
 }
@@ -291,7 +295,7 @@ body {
     content: '';
     position: absolute;
     inset: -3px;
-    border-radius: 50%;
+    border-radius: 22px;
     background: conic-gradient(from 0deg, var(--neon-blue), transparent 40%, var(--neon-beige), transparent 80%, var(--neon-blue));
     z-index: 0;
     animation: rotate 8s linear infinite;
@@ -301,7 +305,7 @@ body {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 50%;
+    border-radius: 18px;
     background: var(--bg-primary);
     z-index: 1;
 }
@@ -958,8 +962,8 @@ body {
     .home-content .typed-line { font-size: 20px; }
     .home-content p { font-size: 15px; }
     .home-sci { justify-content: center; }
-    .home-photo { margin-top: 50px; }
-    .photo-wrapper { width: 240px; height: 240px; }
+    .home-photo { margin-top: 50px; justify-content: center; }
+    .photo-wrapper { width: 240px; height: 221px; }
     
     .section-header h2 { font-size: 28px; }
     .about-right { grid-template-columns: 1fr 1fr; }
