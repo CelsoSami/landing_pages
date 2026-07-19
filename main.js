@@ -17,20 +17,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    var typed = new Typed(".text", {
-        strings: [
-            "a Data Scientist",
-            "a BI Specialist",
-            "an ML Engineer",
-            "a Data Architect",
-            "an AI Explorer"
-        ],
-        typeSpeed: 80,
-        backSpeed: 50,
-        backDelay: 1500,
-        loop: true
-    });
-
+    if (typeof Typed !== 'undefined') {
+        var typed = new Typed(".text", {
+            strings: [
+                "a Data Scientist",
+                "a BI Specialist",
+                "an ML Engineer",
+                "a Data Architect",
+                "an AI Explorer"
+            ],
+            typeSpeed: 80,
+            backSpeed: 50,
+            backDelay: 1500,
+            loop: true
+        });
+    }
     const aboutSection = document.querySelector(".about-container");
     if (aboutSection) {
         const aboutObserver = new IntersectionObserver((entries) => {
