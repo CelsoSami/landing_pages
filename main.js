@@ -12,6 +12,23 @@ var typed = new Typed(".text", {
     loop: true
 });
 
+const menuToggle = document.getElementById('menuToggle');
+const headerRight = document.getElementById('headerRight');
+
+if (menuToggle && headerRight) {
+    menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        headerRight.classList.toggle('open');
+    });
+
+    headerRight.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            headerRight.classList.remove('open');
+        });
+    });
+}
+
 const aboutSection = document.querySelector(".about-container");
 if (aboutSection) {
     const aboutObserver = new IntersectionObserver((entries) => {
