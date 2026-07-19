@@ -958,7 +958,9 @@ body {
     .home-content .typed-line { font-size: 20px; }
     .home-content p { font-size: 15px; }
     .home-sci { justify-content: center; }
-
+    .home-photo { margin-top: 50px; }
+    .photo-wrapper { width: 240px; height: 240px; }
+    
     .section-header h2 { font-size: 28px; }
     .about-right { grid-template-columns: 1fr 1fr; }
     .work-cards { grid-template-columns: 1fr; }
