@@ -168,6 +168,7 @@ body {
     justify-content: space-between;
     gap: 60px;
     padding: 100px 8% 0;
+    flex-wrap: nowrap;
     background:
         radial-gradient(ellipse 60% 50% at 70% 50%, rgba(0, 212, 255, 0.04) 0%, transparent 70%),
         radial-gradient(ellipse 40% 60% at 20% 80%, rgba(232, 213, 183, 0.03) 0%, transparent 70%),
@@ -189,8 +190,10 @@ body {
 
 .home-content {
     max-width: 650px;
+    min-width: 0;
     position: relative;
     z-index: 1;
+    flex-shrink: 1;
 }
 
 .home-content .tag {
