@@ -262,11 +262,11 @@
                         </div>
                     </div>
                 </div>
-                <form class="contact-form" onsubmit="return false;">
-                    <input type="text" placeholder="Seu Nome" required>
-                    <input type="email" placeholder="Seu E-mail" required>
-                    <input type="text" placeholder="Assunto">
-                    <textarea placeholder="Sua Mensagem..." required></textarea>
+                <form class="contact-form" action="https://formspree.io/f/xdaqzkdw" method="POST">
+                    <input type="text" name="name" placeholder="Seu Nome" required>
+                    <input type="email" name="email" placeholder="Seu E-mail" required>
+                    <input type="text" name="subject" placeholder="Assunto">
+                    <textarea name="message" placeholder="Sua Mensagem..." required></textarea>
                     <button type="submit">Enviar Mensagem</button>
                 </form>
             </div>
