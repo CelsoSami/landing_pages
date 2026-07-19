@@ -939,6 +939,41 @@ body {
     50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.2); }
 }
 
+/* ─── Hamburger ─── */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 1001;
+    padding: 4px;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: all .3s ease;
+    transform-origin: center;
+}
+
+.menu-toggle.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+    background: var(--neon-blue);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+    background: var(--neon-blue);
+}
+
 /* ─── Responsive ─── */
 @media (max-width: 1024px) {
     .about-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -947,9 +982,52 @@ body {
 }
 
 @media (max-width: 768px) {
-    .header { padding: 14px 5%; }
+    .menu-toggle { display: flex; }
+
+    .header {
+        padding: 14px 5%;
+        justify-content: space-between;
+    }
     .logo { font-size: 17px; }
-    .navbar a { font-size: 12px; margin-left: 18px; }
+
+    .header-right {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        max-width: 300px;
+        height: 100vh;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 40px;
+        padding: 80px 40px 40px;
+        background: rgba(6, 6, 14, 0.97);
+        backdrop-filter: blur(24px);
+        border-left: 1px solid var(--border);
+        transition: right .35s ease;
+        z-index: 1000;
+    }
+
+    .header-right.open {
+        right: 0;
+    }
+
+    .navbar {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .navbar a {
+        font-size: 16px;
+        margin-left: 0;
+        letter-spacing: 1px;
+    }
+
+    .language-switch {
+        margin-top: 10px;
+    }
 
     .home {
         flex-direction: column;
@@ -972,7 +1050,11 @@ body {
 }
 
 @media (max-width: 480px) {
-    .navbar a { font-size: 11px; margin-left: 12px; }
+    .header-right {
+        width: 85%;
+        padding: 80px 30px 30px;
+    }
+    
     .home-content h1 { font-size: 30px; }
     .about-right { grid-template-columns: 1fr; }
 }
