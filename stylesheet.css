@@ -893,6 +893,160 @@ body {
     transform: translateY(-2px);
 }
 
+/* ─── Wife Page ─── */
+.wife-hero {
+    width: 100%;
+    min-height: 45vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 8% 60px;
+    background:
+        radial-gradient(ellipse 50% 50% at 50% 40%, rgba(0, 212, 255, 0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 50% at 30% 70%, rgba(232, 213, 183, 0.03) 0%, transparent 70%),
+        var(--bg-primary);
+    position: relative;
+}
+
+.wife-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black 20%, transparent 70%);
+}
+
+.wife-hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.wife-hero-content .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--neon-blue);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding: 6px 16px;
+    border: 1px solid var(--neon-blue-dim);
+    border-radius: 4px;
+    background: var(--neon-blue-dim);
+    opacity: 0;
+    animation: fadeSlideUp .7s ease forwards;
+    animation-delay: .3s;
+}
+
+.wife-hero-content h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeSlideRight .8s ease forwards;
+    animation-delay: .5s;
+}
+
+.wife-hero-content h1 .highlight {
+    background: linear-gradient(135deg, var(--neon-blue), var(--neon-beige));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.wife-hero-content p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeSlideUp .7s ease forwards;
+    animation-delay: .7s;
+}
+
+.wife-gallery {
+    width: 100%;
+    padding: 40px 8% 100px;
+    background: var(--bg-primary);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.gallery-item {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all .4s ease;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.gallery-item.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.gallery-item:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0, 212, 255, 0.1);
+}
+
+.gallery-item img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    display: block;
+    transition: transform .6s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.08);
+}
+
+.gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(6, 6, 14, 0) 60%, rgba(6, 6, 14, 0.3) 100%);
+    transition: background .4s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+    background: linear-gradient(180deg, rgba(0, 212, 255, 0.02) 0%, rgba(6, 6, 14, 0.5) 100%);
+}
+
+@media (max-width: 1024px) {
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .wife-hero { min-height: 35vh; padding: 120px 6% 40px; }
+    .wife-hero-content h1 { font-size: 36px; }
+    .wife-hero-content p { font-size: 16px; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .wife-gallery { padding: 20px 5% 60px; }
+}
+
+@media (max-width: 480px) {
+    .wife-hero-content h1 { font-size: 30px; }
+    .gallery-grid { grid-template-columns: 1fr; gap: 16px; }
+}
+
 /* ─── Footer ─── */
 .footer {
     padding: 30px 8%;
