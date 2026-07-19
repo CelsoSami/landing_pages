@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Esposa - Celso Sami</title>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <header class="header">
+        <a href="pt-br.html" class="logo">Celso Sami</a>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="header-right" id="headerRight">
+            <nav class="navbar">
+                <a href="pt-br.html" style="--i:1">Inicio</a>
+                <a href="pt-br.html#about" style="--i:2">Sobre</a>
+                <a href="pt-br.html#work" style="--i:3">Atuacao</a>
+                <a href="pt-br.html#portfolio" style="--i:4">Projetos</a>
+                <a href="the-wife-pt.html" style="--i:5" class="active">The Wife</a>
+                <a href="pt-br.html#contact" style="--i:6">Contato</a>
+            </nav>
+            <div class="language-switch">
+                <a href="the-wife.html">
+                    <span>🇺🇸</span>
+                    <span>EN</span>
+                </a>
+                <span class="language-divider"></span>
+                <a href="the-wife-pt.html" class="active-language">
+                    <span>🇧🇷</span>
+                    <span>PT</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="wife-hero">
+        <div class="wife-hero-content">
+            <span class="tag">Dedicacao</span>
+            <h1>A <span class="highlight">Esposa</span></h1>
+            <p>Uma homenagem a quem torna cada dia mais especial.</p>
+        </div>
+    </section>
+
+    <section class="wife-gallery">
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="./foto_e/foto01.jpg" alt="Foto 01" loading="lazy">
+                <div class="gallery-overlay"></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./foto_e/foto02.jpg" alt="Foto 02" loading="lazy">
+                <div class="gallery-overlay"></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./foto_e/foto03.jpg" alt="Foto 03" loading="lazy">
+                <div class="gallery-overlay"></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./foto_e/foto04.jpg" alt="Foto 04" loading="lazy">
+                <div class="gallery-overlay"></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./foto_e/foto05.jpg" alt="Foto 05" loading="lazy">
+                <div class="gallery-overlay"></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./foto_e/foto06.jpg" alt="Foto 06" loading="lazy">
+                <div class="gallery-overlay"></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./foto_e/foto07.jpg" alt="Foto 07" loading="lazy">
+                <div class="gallery-overlay"></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./foto_e/foto08.jpg" alt="Foto 08" loading="lazy">
+                <div class="gallery-overlay"></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./foto_e/foto09.jpg" alt="Foto 09" loading="lazy">
+                <div class="gallery-overlay"></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./foto_e/foto10.jpg" alt="Foto 10" loading="lazy">
+                <div class="gallery-overlay"></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./foto_e/foto11.jpg" alt="Foto 11" loading="lazy">
+                <div class="gallery-overlay"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 <span>Celso Sami</span>. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('menuToggle');
+            const headerRight = document.getElementById('headerRight');
+            if (menuToggle && headerRight) {
+                menuToggle.addEventListener('click', () => {
+                    menuToggle.classList.toggle('active');
+                    headerRight.classList.toggle('open');
+                });
+                headerRight.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        menuToggle.classList.remove('active');
+                        headerRight.classList.remove('open');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
