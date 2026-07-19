@@ -251,6 +251,70 @@ body {
     animation-delay: 1.3s;
 }
 
+.home-photo {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeSlideLeft .9s ease forwards;
+    animation-delay: 1s;
+}
+
+.photo-wrapper {
+    position: relative;
+    width: 340px;
+    height: 340px;
+}
+
+.photo-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 212, 255, 0.2);
+    position: relative;
+    z-index: 2;
+}
+
+.photo-glow {
+    position: absolute;
+    inset: -15px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
+    z-index: 1;
+    animation: glow 4s ease-in-out infinite;
+}
+
+.photo-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--neon-blue), transparent 40%, var(--neon-beige), transparent 80%, var(--neon-blue));
+    z-index: 0;
+    animation: rotate 8s linear infinite;
+}
+
+.photo-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--bg-primary);
+    z-index: 1;
+}
+
+.photo-wrapper img {
+    z-index: 2;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 .home-sci {
     display: flex;
     gap: 14px;
