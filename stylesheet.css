@@ -1078,6 +1078,383 @@ body {
     .gallery-grid { grid-template-columns: 1fr; gap: 16px; }
 }
 
+/* ─── About Page ─── */
+.about-hero {
+    width: 100%;
+    min-height: 45vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 8% 60px;
+    background:
+        radial-gradient(ellipse 50% 50% at 50% 40%, rgba(0, 212, 255, 0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 50% at 30% 70%, rgba(232, 213, 183, 0.03) 0%, transparent 70%),
+        var(--bg-primary);
+    position: relative;
+}
+
+.about-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black 20%, transparent 70%);
+}
+
+.about-hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.about-hero-content .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--neon-blue);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding: 6px 16px;
+    border: 1px solid var(--neon-blue-dim);
+    border-radius: 4px;
+    background: var(--neon-blue-dim);
+    opacity: 0;
+    animation: fadeSlideUp .7s ease forwards;
+    animation-delay: .3s;
+}
+
+.about-hero-content h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeSlideRight .8s ease forwards;
+    animation-delay: .5s;
+}
+
+.about-hero-content h1 .highlight {
+    background: linear-gradient(135deg, var(--neon-blue), var(--neon-beige));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.about-hero-content p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeSlideUp .7s ease forwards;
+    animation-delay: .7s;
+}
+
+.about-detail {
+    width: 100%;
+    padding: 80px 8% 100px;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+}
+
+.about-detail-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.about-narrative {
+    margin-bottom: 80px;
+}
+
+.about-narrative p {
+    font-size: 17px;
+    line-height: 1.85;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.about-timeline-section,
+.about-education-section,
+.about-skills-section,
+.about-faq-section {
+    margin-bottom: 80px;
+}
+
+.about-timeline-section .section-header,
+.about-education-section .section-header,
+.about-skills-section .section-header,
+.about-faq-section .section-header {
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+/* ─── Timeline ─── */
+.timeline {
+    position: relative;
+    padding-left: 32px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--neon-blue), var(--border));
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -29px;
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 2px solid var(--neon-blue);
+    z-index: 1;
+    transition: all .3s ease;
+}
+
+.timeline-item:hover .timeline-dot {
+    background: var(--neon-blue);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+}
+
+.timeline-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    transition: all .35s ease;
+}
+
+.timeline-item:hover .timeline-content {
+    border-color: var(--border-hover);
+    box-shadow: 0 8px 30px rgba(0, 212, 255, 0.06);
+}
+
+.timeline-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+
+.timeline-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.timeline-company {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--neon-blue);
+    font-weight: 500;
+}
+
+.timeline-date {
+    display: inline-block;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 14px;
+}
+
+.timeline-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.timeline-list li {
+    position: relative;
+    padding-left: 18px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.timeline-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--neon-blue);
+    opacity: 0.6;
+}
+
+/* ─── Education Grid ─── */
+.education-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.education-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    transition: all .35s ease;
+}
+
+.education-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 212, 255, 0.08);
+}
+
+.education-icon {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--neon-blue-dim);
+    border-radius: 10px;
+    background: var(--neon-blue-dim);
+    font-size: 20px;
+    color: var(--neon-blue);
+    margin-bottom: 16px;
+}
+
+.education-card h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.education-school {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.education-date {
+    font-size: 12px;
+    color: var(--neon-blue);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
+}
+
+/* ─── Skills Grid ─── */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.skill-group {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all .35s ease;
+}
+
+.skill-group:hover {
+    border-color: var(--border-hover);
+}
+
+.skill-group h4 {
+    font-size: 14px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.skill-group h4 i {
+    color: var(--neon-blue);
+    font-size: 18px;
+}
+
+/* ─── FAQ ─── */
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.faq-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all .35s ease;
+}
+
+.faq-item:hover {
+    border-color: var(--border-hover);
+}
+
+.faq-item[open] {
+    border-color: var(--border-hover);
+    box-shadow: 0 4px 20px rgba(0, 212, 255, 0.06);
+}
+
+.faq-item summary {
+    padding: 20px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: color .3s;
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary::after {
+    content: '+';
+    font-size: 20px;
+    color: var(--neon-blue);
+    font-weight: 400;
+    transition: transform .3s ease;
+}
+
+.faq-item[open] summary::after {
+    transform: rotate(45deg);
+}
+
+.faq-item summary:hover {
+    color: var(--neon-blue);
+}
+
+.faq-item p {
+    padding: 0 24px 20px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
 /* ─── Footer ─── */
 .footer {
     padding: 30px 8%;
