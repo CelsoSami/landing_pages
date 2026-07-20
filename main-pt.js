@@ -98,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-});
 
 // Particle System
     const canvas = document.getElementById('particle-canvas');
