@@ -771,12 +771,17 @@ body {
     border-top: 1px solid var(--border);
 }
 
-.contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: start;
+.contact-grid { 
+    max-width: 600px;
+    margin: 0 auto;
 }
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 
 .contact-text p {
     font-size: 16px;
