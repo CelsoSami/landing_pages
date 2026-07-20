@@ -1603,6 +1603,16 @@ body {
     .about-right { grid-template-columns: 1fr 1fr; }
     .work-cards { grid-template-columns: 1fr; }
     .portfolio-cards { grid-template-columns: 1fr; }
+    .about-hero { min-height: 35vh; padding: 120px 6% 40px; }
+    .about-hero-content h1 { font-size: 36px; }
+    .about-hero-content p { font-size: 16px; }
+    .about-detail { padding: 60px 6% 60px; }
+    .education-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .about-timeline-section .section-header,
+    .about-education-section .section-header,
+    .about-skills-section .section-header,
+    .about-faq-section .section-header { text-align: center; }
 }
 
 @media (max-width: 480px) {
