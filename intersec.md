@@ -167,41 +167,88 @@ Times acima da linha = "superaram o investimento". Abaixo = "desperdiçaram dinh
 
 ### KPI 3: DESVIO DE VALOR vs RESULTADO
 
-> A diferença de valor entre mandante e visitante versus o resultado real.
-> Quando o time mais barato ganha do mais caro, há DESVIO POSITIVO (surpresa).
+> Mede a "surpresa financeira" de cada jogo: quando um time mais barato
+> arranca um resultado positivo contra um time mais caro.
+> Quanto MAIOR o valor, maior a surpresa (e menor o poder aquisitivo determinou o resultado).
+
+**PASSO 1 — Criar a medida (cole no Modelagem → Nova Medida):**
 
 ```
 DesvioValorResultado =
-VAR _valorDiff =
-    SUM(VisaoTime[ValorEquipe]) -
-    CALCULATE(
-        SUM(VisaoTime[ValorEquipe]),
-        RELATEDTABLE(VisaoTime),
-        VisaoTime[Adversario] = EARLIER(VisaoTime[Time])
-    )
-VAR _golsDiff = SUM(VisaoTime[GolsPro]) - SUM(VisaoTime[GolsContra])
-RETURN
-    _golsDiff - (_valorDiff / 100000000)
-```
-
-**Alternativa MAIS SIMPLES (recomendada):**
-
-```
-DesvioValorSimples =
 VAR _meuValor = SUM(VisaoTime[ValorEquipe])
 VAR _meusGols = SUM(VisaoTime[GolsPro])
 VAR _golsSofridos = SUM(VisaoTime[GolsContra])
-VAR _eficiencia = DIVIDE(_meusGols, _meuValor / 1000000, 0)
+VAR _valorAdversario =
+    CALCULATE(
+        SUM(VisaoTime[ValorEquipe]),
+        FILTER(
+            VisaoTime,
+            VisaoTime[Time] = EARLIER(VisaoTime[Adversario])
+                && VisaoTime[Data] = EARLIER(VisaoTime[Data])
+        )
+    )
+VAR _diferencaValor = _valorAdversario - _meuValor
+VAR _resultadoGols = _meusGols - _golsSofridos   
 RETURN
-    _eficiencia
+    IF(
+        _diferencaValor > 0 && _resultadoGols >= 0,
+        DIVIDE(_resultadoGols * _diferencaValor, 1000000, 0),
+        IF(
+            _diferencaValor > 0 && _resultadoGols < 0,
+            DIVIDE(_resultadoGols * _diferencaValor, 1000000, 0),
+            0
+        )
+    )
 ```
 
-**Visual:** Scatter Plot. Eixo X = `ValorEquipe` (média), Eixo Y = `GolsPro` (total), Bubble = `Time`.
-Adicione **quadrantes** (Analytics → Quadrant):
-- Superior esquerdo = "Gênio Barato" (pouco dinheiro, muitos gols)
-- Superior direito = "Campeão Justo" (muito dinheiro, muitos gols)
-- Inferior esquerdo = "Modesto" (pouco dinheiro, poucos gols)
-- Inferior direito = "Desperdício" (muito dinheiro, poucos gols)
+**PASSO 2 — Criar uma medida auxiliar para o label (nome do jogo):**
+
+```
+NomeJogo =
+VAR _mandante = MAX(VisaoTime[Time])
+VAR _visitante = MAX(VisaoTime[Adversario])
+VAR _data = MAX(VisaoTime[Data])
+RETURN
+    _mandante & " x " & _visitante & " (" & _data & ")"
+```
+
+**PASSO 3 — Montar o Scatter Plot (passo a passo):**
+
+1. Na aba **Visualizações**, clique no ícone **Scatter Chart** (bolhas)
+2. Arraste os campos EXATAMENTE nestas posições:
+   - **Eixo X (Valores de detalhe):** `DesvioValorResultado` (a medida que criou)
+   - **Eixo Y:** `GolsPro` (soma)
+   - **Detalhes (bolhas):** `NomeJogo` (a medida auxiliar)
+   - **Tamanho da bolha:** `Publico` (soma) — jogos com mais público = bolha maior
+   - **Cor:** crie uma medida condicional:
+     ```
+     CorDesvio =
+         IF([DesvioValorResultado] > 0, "#00C853", "#FF1744")
+     ```
+     E coloque no campo **Legenda/Cores** do scatter
+3. No painel **Formato → Título**, escreva: "Mapa de Surpresas Financeiras"
+4. No painel **Analytics → Linha de referência**, adicione:
+   - Linha Constante no eixo X = 0 (separa "surpresas" de "favoritos")
+   - Linha Constante no eixo Y = média de gols
+
+**PASSO 4 — Interpretar os quadrantes:**
+
+| Posição | Significado | Cor |
+|---------|-------------|-----|
+| Direita + Alta (X>0, Y>alto) | SURPRESA ÉPICA — time barato ganhou com gols de um time caro | Verde |
+| Direita + Baixa (X>0, Y<baixo) | SURPRESA MODERADA — time barato empatou ou perdeu pouco | Verde claro |
+| Esquerda (X<0) | FAVORITO CUMPRIU — time caro ganhou como esperado | Vermelho |
+| Próximo de X=0 | JOGO EQUILIBRADO — valores parecidos | Cinza |
+
+**Exemplo prático:**
+- Palmeiras (R$ 45M) 2 x 0 Grêmio (R$ 52M):差= -7M, resultado=+2 → Desvio pequeno (favorito)
+- América-MG (R$ 3M) 0 x 2 Palmeiras (R$ 62M):差= -59M, resultado=+2 → Desvio NEGATIVO (favorito dominou)
+- Cuiabá (R$ 4.5M) 1 x 2 Grêmio (R$ 50M):差= -45.5M, resultado=+1 → Desvio pequeno
+
+> **DICA DE PORTFOLIO:** Adicione um **tooltip customizado** — crie uma página nova
+> chamada "TooltipDesvio" com 4 cards (Time, ValorEquipe, GolsPro, GolsContra)
+> e em Format → Tooltip → Report page selecione "TooltipDesvio".
+> Ao passar o mouse sobre cada bolha, aparece o detalhe do jogo.
 
 ---
 
