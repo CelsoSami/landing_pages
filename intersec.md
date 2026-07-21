@@ -739,48 +739,67 @@ RadarPublico =
 - **Tooltips customizados:** Crie uma página "TooltipPage" e atribua em Formato → Page Information → Tooltip Report Page
 - **Drill-through:** Configure em cada visual a opção de drill-through para a página "Detalhe do Jogo"
 
-DimJogos =
-ADDCOLUMNS(
-    SUMMARIZE('CopaDoBrasil',
-        'CopaDoBrasil'[data],
-        'CopaDoBrasil'[time_mandante],
-        'CopaDoBrasil'[time_visitante],
-        'CopaDoBrasil'[fase],
-        'CopaDoBrasil'[estadio],
-        'CopaDoBrasil'[arbitro],
-        'CopaDoBrasil'[publico],
-        'CopaDoBrasil'[publico_max],
-        'CopaDoBrasil'[gols_mandante],
-        'CopaDoBrasil'[gols_visitante],
-        'CopaDoBrasil'[gols_1_tempo_mandante],
-        'CopaDoBrasil'[gols_1_tempo_visitante],
-        'CopaDoBrasil'[penalti],
-        'CopaDoBrasil'[gols_penalti_mandante],
-        'CopaDoBrasil'[gols_penalti_visitante],
-        'CopaDoBrasil'[escanteios_mandante],
-        'CopaDoBrasil'[escanteios_visitante],
-        'CopaDoBrasil'[faltas_mandante],
-        'CopaDoBrasil'[faltas_visitante],
-        'CopaDoBrasil'[chutes_mandante],
-        'CopaDoBrasil'[chutes_visitante],
-        'CopaDoBrasil'[chutes_fora_mandante],
-        'CopaDoBrasil'[chutes_fora_visitante],
-        'CopaDoBrasil'[defesas_mandante],
-        'CopaDoBrasil'[defesas_visitante],
-        'CopaDoBrasil'[impedimentos_mandante],
-        'CopaDoBrasil'[impedimentos_visitante],
-        'CopaDoBrasil'[chutes_bola_parada_mandante],
-        'CopaDoBrasil'[chutes_bola_parada_visitante],
-        'CopaDoBrasil'[valor_equipe_titular_mandante],
-        'CopaDoBrasil'[valor_equipe_titular_visitante]
-    ),
-    "NomeJogo", [time_mandante] & " x " & [time_visitante],
-    "GolsTotal", [gols_mandante] + [gols_visitante],
-    "Gols1TTotal", [gols_1_tempo_mandante] + [gols_1_tempo_visitante],
-    "EscanteiosTotal", [escanteios_mandante] + [escanteios_visitante],
-    "FaltasTotal", [faltas_mandante] + [faltas_visitante],
-    "ChutesTotal", [chutes_mandante] + [chutes_visitante],
-    "ImpedimentosTotal", [impedimentos_mandante] + [impedimentos_visitante],
-    "BolaParadaTotal", [chutes_bola_parada_mandante] + [chutes_bola_parada_visitante],
-    "GolsPenaltiTotal", [gols_penalti_mandante] + [gols_penalti_visitante]
+## PASSO 0.1: COLUNA "JogoUnico" na tabela VisaoTime
+
+> **PROBLEMA:** Cada jogo aparece 2 vezes na VisaoTime (mandante + visitante).
+> Precisamos de uma coluna que retorne o nome do jogo APENAS em uma das linhas.
+>
+> **REGRA:** Se "São Paulo x ABC" já existe, "ABC x São Paulo" retorna BLANK().
+
+**Vá em Modelagem → Nova Coluna e cole:**
+
+```
+JogoUnico =
+VAR _meuTime = VisaoTime[Time]
+VAR _meuAdv = VisaoTime[Adversario]
+VAR _existeReverso =
+    COUNTROWS(
+        FILTER(
+            VisaoTime,
+            VisaoTime[Time] = _meuAdv
+                && VisaoTime[Adversario] = _meuTime
+                && VisaoTime[Data] = VisaoTime[Data]
+        )
+    )
+RETURN
+    IF(
+        _existeReverso > 0 && _meuTime > _meuAdv,
+        BLANK(),
+        _meuTime & " x " & _meuAdv
+    )
+```
+
+**Como funciona (passo a passo):**
+
+| Linha na VisaoTime | Time | Adversario | Time > Adversario? | Existe reverso? | Resultado |
+|---|---|---|---|---|---|
+| 1 | São Paulo | ABC | SIM | SIM | **BLANK()** (reverso "ABC x São Paulo" já existe) |
+| 2 | ABC | São Paulo | NÃO | SIM | **"ABC x São Paulo"** (mantém) |
+| 3 | Palmeiras | Grêmio | NÃO | SIM | **"Palmeiras x Grêmio"** (mantém) |
+| 4 | Grêmio | Palmeira | SIM | SIM | **BLANK()** |
+| 5 | Santos | Ceará | NÃO | NÃO | **"Santos x Ceará"** (sem reverso, mantém) |
+
+> **ATENÇÃO ao sinal `>`:** No exemplo do usuário, "São Paulo" > "ABC" e deveria retornar BLANK.
+> Se quiser o comportamento inverso (manter "São Paulo x ABC" e blankar "ABC x São Paulo"),
+> troque `_meuTime > _meuAdv` por `_meuTime < _meuAdv`.
+
+**Colunas auxiliares (opcionais, mas úteis para o Scatter Plot):**
+
+```
+NomeJogoUnico = VisaoTime[JogoUnico]
+```
+
+```
+JogoOrdenado =
+IF(
+    VisaoTime[Time] < VisaoTime[Adversario],
+    VisaoTime[Time] & " x " & VisaoTime[Adversario],
+    VisaoTime[Adversario] & " x " & VisaoTime[Time]
 )
+```
+
+> `JogoOrdenado` SEMPRE coloca o time menor primeiro (A x B, nunca B x A).
+> Útil para ordenar o eixo X do scatter de forma consistente.
+
+---
+
