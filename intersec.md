@@ -1,41 +1,11 @@
-# Databricks notebook source
-# MAGIC %md
-# MAGIC # Transformação EBA_CSC
-# MAGIC Conversão de Power Query (M) para Python/Pandas
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Imports e Leitura do Arquivo
-
-# COMMAND ----------
-
 import pandas as pd
 import numpy as np
 from datetime import datetime
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Configuração do caminho do arquivo
-# MAGIC Ajuste o caminho conforme seu ambiente no Fabric
-
-# COMMAND ----------
-
-# No Fabric, o arquivo deve estar acessível via abfss:// ou montagem
-# Exemplo com montagem:
-# df_cadastro = pd.read_excel("/mnt/seu_mount/pasta/EBA_CSC_042026.xlsx", sheet_name="Cadastro")
-# df_valor_dolar = pd.read_excel("/mnt/seu_mount/pasta/EBA_CSC_042026.xlsx", sheet_name="$")
-
-# Exemplo local (para testes):
-CAMINHO_ARQUIVO = r"C:\Users\celso.junior\Downloads\EBA_CSC_042026.xlsx"
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Funções Auxiliares
-
-# COMMAND ----------
+CAMINHO_ARQUIVO = (
+    "/lakehouse/default/Files/bronze/rateio_csc_sharepoint_data/01_FORNECEDORES_RATEIO_CSC/RELATORIO_ANALITICO_CSC_MENSAL_BI/"
+    "EBA_CSC_042026.xlsx"
+)
 
 def find_cell(df, texto_busca, case_sensitive=False):
     """
@@ -106,13 +76,6 @@ def get_value_after_label(df, label_text):
             return val
     return None
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Leitura das Abas
-
-# COMMAND ----------
-
 fonte_cadastro = pd.read_excel(
     CAMINHO_ARQUIVO,
     sheet_name="Cadastro",
@@ -124,13 +87,6 @@ fonte_valor_dolar = pd.read_excel(
     sheet_name="$",
     header=None
 )
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## TABELA DE PREÇOS NO PERÍODO - Serviços e Pesos
-
-# COMMAND ----------
 
 pos_tabela_precos = find_cell(fonte_cadastro, "TABELA DE PREÇOS NO PERIODO")
 
@@ -156,13 +112,6 @@ tbl_servicos = pd.DataFrame(servicos)
 print(f"Serviços encontrados: {len(tbl_servicos)}")
 tbl_servicos.head(10)
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## TABELA DINÂMICA - Rótulos de Linha / Centros de Custo
-
-# COMMAND ----------
-
 pos_rotulos = find_cell(fonte_cadastro, "Rótulos de Linha")
 
 if pos_rotulos is None:
@@ -171,11 +120,9 @@ if pos_rotulos is None:
 linha_pivot = pos_rotulos[0]
 coluna_pivot = pos_rotulos[1]
 
-# Cabeçalhos (Serviços na pivot)
 linha_cabecalho = fonte_cadastro.iloc[linha_pivot].values
 servicos_pivot = linha_cabecalho[coluna_pivot + 1:]
 
-# Centros de Custo (linhas abaixo do pivot até "Total Geral")
 centros_custo = []
 for i in range(linha_pivot + 1, len(fonte_cadastro)):
     cc_val = fonte_cadastro.iat[i, coluna_pivot]
@@ -190,20 +137,12 @@ for i in range(linha_pivot + 1, len(fonte_cadastro)):
 
 print(f"Centros de Custo encontrados: {len(centros_custo)}")
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Cruzamento Serviço x Centro de Custo
-
-# COMMAND ----------
-
 registros = []
 
 for cc in centros_custo:
     for _, srv in tbl_servicos.iterrows():
         srv_upper = srv["Servico"].strip().upper()
         
-        # Encontrar posição do serviço nos cabeçalhos da pivot
         pos_servico = None
         for idx, sp in enumerate(servicos_pivot):
             sp_text = safe_text(sp).upper()
@@ -230,20 +169,12 @@ for cc in centros_custo:
 
 tabela_final = pd.DataFrame(registros)
 
-# Calcula Valor = Peso × Quantidade
 tabela_final["Valor"] = (
     tabela_final["Peso"].fillna(0) * tabela_final["Quantidade"].fillna(0)
 )
 
 print(f"Registros gerados: {len(tabela_final)}")
 tabela_final.head(10)
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## FORMAÇÃO DE PREÇOS NO PERÍODO
-
-# COMMAND ----------
 
 pos_formacao = find_cell(fonte_cadastro, "FORMAÇÃO DE PREÇOS NO PERIODO")
 
@@ -266,10 +197,8 @@ for i in range(linha_formacao_servicos, len(fonte_cadastro)):
 
 tbl_formacao = pd.DataFrame(formacao_precos)
 
-# Padroniza Servico para join
 tabela_final["Servico_Upper"] = tabela_final["Servico"].str.strip().str.upper()
 
-# Merge com Formação de Preços
 tabela_final = tabela_final.merge(
     tbl_formacao[["Servico", "Peso_Formacao"]],
     left_on="Servico_Upper",
@@ -279,13 +208,6 @@ tabela_final = tabela_final.merge(
 ).drop(columns=["Servico_formacao"], errors="ignore")
 
 print(f"Formação de Preços: {len(tbl_formacao)} serviços")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## VOLUMETRIA NO PERÍODO
-
-# COMMAND ----------
 
 pos_volumetria = find_cell(fonte_cadastro, "VOLUMETRIA NO PERIODO")
 
@@ -297,7 +219,6 @@ linha_volumetria = pos_volumetria[0]
 linha_volumetria_peso = pos_volumetria[0] + 1
 coluna_inicio_vol = pos_volumetria[1] + 1
 
-# Extrai serviços da linha acima de "Volumetria"
 servicos_vol_raw = fonte_cadastro.iloc[linha_servicos_vol, coluna_inicio_vol:].values
 volumetria_raw = fonte_cadastro.iloc[linha_volumetria, coluna_inicio_vol:].values
 volumetria_peso_raw = fonte_cadastro.iloc[linha_volumetria_peso, coluna_inicio_vol:].values
@@ -314,7 +235,6 @@ for idx, srv in enumerate(servicos_vol_raw):
 
 tbl_volumetria = pd.DataFrame(servicos_vol)
 
-# Merge com Volumetria
 tabela_final = tabela_final.merge(
     tbl_volumetria[["Servico", "Volumetria", "Volumetria_Com_Peso"]],
     on="Servico",
@@ -322,13 +242,6 @@ tabela_final = tabela_final.merge(
 )
 
 print(f"Volumetria: {len(tbl_volumetria)} serviços")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## CUSTO DE CADASTRO (Validação)
-
-# COMMAND ----------
 
 valor_custo_cadastro = get_value_after_label(fonte_cadastro, "CUSTO DE CADASTRO:")
 
@@ -343,13 +256,6 @@ else:
 print(f"Custo de Cadastro: {valor_custo_cadastro}")
 print(f"Soma Calculada: {soma_valor_calculado:.2f}")
 print(f"Validação: {validacao}")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## BASE FINANCEIRA (aba $)
-
-# COMMAND ----------
 
 base_financeira_bruto = get_value_after_label(fonte_valor_dolar, "Base Financeira:")
 
@@ -370,13 +276,6 @@ else:
 print(f"Base Financeira: {data_base}")
 print(f"Mês/Ano Base: {mes_ano_base}")
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## BASE OPERACIONAL (aba $)
-
-# COMMAND ----------
-
 base_operacional_bruto = get_value_after_label(fonte_valor_dolar, "Base Operacional:")
 
 if base_operacional_bruto is not None:
@@ -396,25 +295,15 @@ else:
 print(f"Base Operacional: {data_operacional}")
 print(f"Mês/Ano Operacional: {mes_ano_operacional}")
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Colunas Finais
-
-# COMMAND ----------
-
 tabela_final["MesAnoOperacional"] = mes_ano_operacional
 tabela_final["MesAnoBase"] = mes_ano_base
 tabela_final["ValidacaoCadastro"] = validacao
 
-# Remove coluna auxiliar
 tabela_final.drop(columns=["Servico_Upper"], inplace=True, errors="ignore")
 
-# Ordena por CentroCusto
 tabela_final.sort_values(by="CentroCusto", ascending=True, inplace=True)
 tabela_final.reset_index(drop=True, inplace=True)
 
-# Tipagem
 tabela_final["Peso"] = pd.to_numeric(tabela_final["Peso"], errors="coerce")
 tabela_final["Peso_Formacao"] = pd.to_numeric(tabela_final["Peso_Formacao"], errors="coerce")
 tabela_final["Quantidade"] = pd.to_numeric(tabela_final["Quantidade"], errors="coerce")
@@ -422,23 +311,9 @@ tabela_final["Valor"] = pd.to_numeric(tabela_final["Valor"], errors="coerce")
 tabela_final["Volumetria"] = pd.to_numeric(tabela_final["Volumetria"], errors="coerce")
 tabela_final["Volumetria_Com_Peso"] = pd.to_numeric(tabela_final["Volumetria_Com_Peso"], errors="coerce")
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Resultado Final
-
-# COMMAND ----------
-
 print(f"Total de linhas: {len(tabela_final)}")
 print(f"Colunas: {list(tabela_final.columns)}")
 display(tabela_final)
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Checklist de Validação
-
-# COMMAND ----------
 
 checklist = {
     "TABELA DE PREÇOS NO PERIODO encontrado": pos_tabela_precos is not None,
@@ -456,16 +331,3 @@ checklist = {
 for item, ok in checklist.items():
     status = "✓" if ok else "✗"
     print(f"  {status} {item}")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Exportar (opcional)
-
-# COMMAND ----------
-
-# Para salvar no Lakehouse do Fabric:
-# tabela_final.write.format("delta").mode("overwrite").saveAsTable("tabela_eba_csc")
-
-# Para salvar como CSV:
-# tabela_final.to_csv("/mnt/seu_mount/resultados/tabela_eba_csc.csv", index=False)
