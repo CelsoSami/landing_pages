@@ -1,15 +1,1 @@
 # Build-a-Complete-Responsive-Personal-Portfolio-Website-using-HTML-CSS-JavaScript
-
-@keyframes polygon-in-opposing-corners {
-  from {
-    clip-path: var(--opposing-corners-out);
-  }
-  to {
-    clip-path: var(--opposing-corners-in);
-  }
-}
-
-[transition-style="in:polygon:opposing-corners"] {
-  --transition__duration: 1.5s;
-  animation-name: polygon-in-opposing-corners;
-}
