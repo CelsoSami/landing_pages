@@ -738,3 +738,49 @@ RadarPublico =
 - **Page transitions:** Use Bookmarks + Buttons para navegar entre páginas como slides
 - **Tooltips customizados:** Crie uma página "TooltipPage" e atribua em Formato → Page Information → Tooltip Report Page
 - **Drill-through:** Configure em cada visual a opção de drill-through para a página "Detalhe do Jogo"
+
+DimJogos =
+ADDCOLUMNS(
+    SUMMARIZE('CopaDoBrasil',
+        'CopaDoBrasil'[data],
+        'CopaDoBrasil'[time_mandante],
+        'CopaDoBrasil'[time_visitante],
+        'CopaDoBrasil'[fase],
+        'CopaDoBrasil'[estadio],
+        'CopaDoBrasil'[arbitro],
+        'CopaDoBrasil'[publico],
+        'CopaDoBrasil'[publico_max],
+        'CopaDoBrasil'[gols_mandante],
+        'CopaDoBrasil'[gols_visitante],
+        'CopaDoBrasil'[gols_1_tempo_mandante],
+        'CopaDoBrasil'[gols_1_tempo_visitante],
+        'CopaDoBrasil'[penalti],
+        'CopaDoBrasil'[gols_penalti_mandante],
+        'CopaDoBrasil'[gols_penalti_visitante],
+        'CopaDoBrasil'[escanteios_mandante],
+        'CopaDoBrasil'[escanteios_visitante],
+        'CopaDoBrasil'[faltas_mandante],
+        'CopaDoBrasil'[faltas_visitante],
+        'CopaDoBrasil'[chutes_mandante],
+        'CopaDoBrasil'[chutes_visitante],
+        'CopaDoBrasil'[chutes_fora_mandante],
+        'CopaDoBrasil'[chutes_fora_visitante],
+        'CopaDoBrasil'[defesas_mandante],
+        'CopaDoBrasil'[defesas_visitante],
+        'CopaDoBrasil'[impedimentos_mandante],
+        'CopaDoBrasil'[impedimentos_visitante],
+        'CopaDoBrasil'[chutes_bola_parada_mandante],
+        'CopaDoBrasil'[chutes_bola_parada_visitante],
+        'CopaDoBrasil'[valor_equipe_titular_mandante],
+        'CopaDoBrasil'[valor_equipe_titular_visitante]
+    ),
+    "NomeJogo", [time_mandante] & " x " & [time_visitante],
+    "GolsTotal", [gols_mandante] + [gols_visitante],
+    "Gols1TTotal", [gols_1_tempo_mandante] + [gols_1_tempo_visitante],
+    "EscanteiosTotal", [escanteios_mandante] + [escanteios_visitante],
+    "FaltasTotal", [faltas_mandante] + [faltas_visitante],
+    "ChutesTotal", [chutes_mandante] + [chutes_visitante],
+    "ImpedimentosTotal", [impedimentos_mandante] + [impedimentos_visitante],
+    "BolaParadaTotal", [chutes_bola_parada_mandante] + [chutes_bola_parada_visitante],
+    "GolsPenaltiTotal", [gols_penalti_mandante] + [gols_penalti_visitante]
+)
