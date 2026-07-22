@@ -1,435 +1,72 @@
-# Databricks notebook source
-# MAGIC %md
-# MAGIC # Transformação EBA_CSC - Aba Outros
-# MAGIC Conversão de Power Query (M) para Python/Pandas
-
-# COMMAND ----------
-
-import pandas as pd
-import numpy as np
-from datetime import datetime
-
-# COMMAND ----------
-
-CAMINHO_ARQUIVO = (
-    "/lakehouse/default/Files/"
-    "bronze/rateio_csc_sharepoint_data/"
-    "01_FORNECEDORES_RATEIO_CSC/RELATORIO_ANALITICO_CSC_MENSAL_BI/"
-    "EBA_CSC_042026.xlsx"
-)
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Funções Auxiliares
-
-# COMMAND ----------
-
-def find_cell(df, texto_busca, case_sensitive=False):
-    texto_upper = texto_busca.upper() if not case_sensitive else texto_busca
-    for i in range(len(df)):
-        for j in range(len(df.columns)):
-            valor = df.iat[i, j]
-            if pd.notna(valor):
-                valor_str = str(valor).strip()
-                comparar = valor_str.upper() if not case_sensitive else valor_str
-                if comparar == texto_upper:
-                    return (i, j)
-    return None
-
-
-def safe_text(valor):
-    if pd.isna(valor):
-        return ""
-    return str(valor).strip()
-
-
-def safe_number(valor):
-    if pd.isna(valor):
-        return None
-    try:
-        return float(valor)
-    except (ValueError, TypeError):
-        return None
-
-
-def normalize_servico(valor):
-    """Trim + Upper + remoção de caracteres não imprimíveis (equivale a Text.Clean no M)."""
-    if pd.isna(valor):
-        return ""
-    texto = str(valor).strip().upper()
-    texto = "".join(c for c in texto if c.isprintable())
-    return texto
-
-
-def get_value_after_label(df, label_text):
-    pos = find_cell(df, label_text)
-    if pos is None:
-        return None
-    linha, coluna = pos
-    row_data = df.iloc[linha, coluna + 1:].values
-    for val in row_data:
-        if pd.notna(val) and str(val).strip() != "":
-            return val
-    return None
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Leitura da Aba Outros
-
-# COMMAND ----------
-
-fonte_outros = pd.read_excel(
-    CAMINHO_ARQUIVO,
-    sheet_name="Outros",
-    header=None
-)
-
-fonte_valor_dolar = pd.read_excel(
-    CAMINHO_ARQUIVO,
-    sheet_name="$",
-    header=None
-)
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## TABELA DE PREÇOS NO PERÍODO - Serviços e Pesos
-
-# COMMAND ----------
-
-pos_tabela_precos = find_cell(fonte_outros, "TABELA DE PREÇOS NO PERIODO")
-
-if pos_tabela_precos is None:
-    raise ValueError("Texto 'TABELA DE PREÇOS NO PERIODO' não encontrado na aba Outros")
-
-linha_inicio_servicos = pos_tabela_precos[0] + 12
-coluna_servico = pos_tabela_precos[1] + 1
-coluna_peso = coluna_servico + 1
-
-servicos = []
-for i in range(linha_inicio_servicos, len(fonte_outros)):
-    srv_val = fonte_outros.iat[i, coluna_servico]
-    if pd.isna(srv_val) or str(srv_val).strip() == "":
-        break
-    servicos.append({
-        "Servico": str(srv_val).strip(),
-        "Peso": safe_number(fonte_outros.iat[i, coluna_peso])
-    })
-
-tbl_servicos = pd.DataFrame(servicos)
-
-print(f"Serviços encontrados: {len(tbl_servicos)}")
-display(tbl_servicos.head(10))
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## TABELA DINÂMICA - Rótulos de Linha / Centros de Custo
-
-# COMMAND ----------
-
-pos_rotulos = find_cell(fonte_outros, "Rótulos de Linha")
-
-if pos_rotulos is None:
-    raise ValueError("Texto 'Rótulos de Linha' não encontrado na aba Outros")
-
-linha_pivot = pos_rotulos[0]
-coluna_pivot = pos_rotulos[1]
-
-linha_cabecalho = fonte_outros.iloc[linha_pivot].values
-servicos_pivot = linha_cabecalho[coluna_pivot + 1:]
-
-centros_custo = []
-for i in range(linha_pivot + 1, len(fonte_outros)):
-    cc_val = fonte_outros.iat[i, coluna_pivot]
-    if pd.isna(cc_val):
-        continue
-    if str(cc_val).strip().upper() == "TOTAL GERAL":
-        break
-    centros_custo.append({
-        "CC": str(cc_val).strip(),
-        "row_data": fonte_outros.iloc[i].values
-    })
-
-print(f"Centros de Custo encontrados: {len(centros_custo)}")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Cruzamento Serviço x Centro de Custo
-
-# COMMAND ----------
-
-registros = []
-
-for cc in centros_custo:
-    for _, srv in tbl_servicos.iterrows():
-        srv_upper = srv["Servico"].strip().upper()
-
-        pos_servico = None
-        for idx, sp in enumerate(servicos_pivot):
-            sp_text = safe_text(sp).upper()
-            if sp_text == srv_upper:
-                pos_servico = idx
-                break
-
-        quantidade = None
-        if pos_servico is not None:
-            try:
-                quantidade = safe_number(
-                    cc["row_data"][coluna_pivot + 1 + pos_servico]
-                )
-            except (IndexError, KeyError):
-                quantidade = None
-
-        registros.append({
-            "Aba": "Outros",
-            "Servico": srv["Servico"],
-            "Peso": srv["Peso"],
-            "CentroCusto": cc["CC"],
-            "Quantidade": quantidade
-        })
-
-tabela_final = pd.DataFrame(registros)
-
-tabela_final["Valor"] = (
-    tabela_final["Peso"].fillna(0) * tabela_final["Quantidade"].fillna(0)
-)
-
-print(f"Registros gerados: {len(tabela_final)}")
-display(tabela_final.head(10))
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## FORMAÇÃO DE PREÇOS NO PERÍODO
-
-# COMMAND ----------
-
-pos_formacao = find_cell(fonte_outros, "FORMAÇÃO DE PREÇOS NO PERIODO")
-
-if pos_formacao is None:
-    raise ValueError("Texto 'FORMAÇÃO DE PREÇOS NO PERIODO' não encontrado")
-
-linha_formacao_servicos = pos_formacao[0] + 4
-coluna_formacao_servico = pos_formacao[1] + 1
-coluna_formacao_peso = coluna_formacao_servico + 1
-
-formacao_precos = []
-for i in range(linha_formacao_servicos, len(fonte_outros)):
-    srv_val = fonte_outros.iat[i, coluna_formacao_servico]
-    if pd.isna(srv_val) or str(srv_val).strip() == "":
-        break
-    formacao_precos.append({
-        "Servico": str(srv_val).strip().upper(),
-        "Peso_Formacao": safe_number(fonte_outros.iat[i, coluna_formacao_peso])
-    })
-
-tbl_formacao = pd.DataFrame(formacao_precos)
-
-# Merge com normalização via Text.Clean (remove caracteres não imprimíveis)
-tabela_final["Servico_Norm"] = tabela_final["Servico"].apply(normalize_servico)
-tbl_formacao["Servico_Norm"] = tbl_formacao["Servico"].apply(normalize_servico)
-
-tabela_final = tabela_final.merge(
-    tbl_formacao[["Servico_Norm", "Peso_Formacao"]],
-    on="Servico_Norm",
-    how="left"
-)
-
-print(f"Formação de Preços: {len(tbl_formacao)} serviços")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## VOLUMETRIA NO PERÍODO
-
-# COMMAND ----------
-
-pos_volumetria = find_cell(fonte_outros, "VOLUMETRIA NO PERIODO")
-
-if pos_volumetria is None:
-    raise ValueError("Texto 'VOLUMETRIA NO PERIODO' não encontrado")
-
-linha_servicos_vol = pos_volumetria[0] - 1
-linha_volumetria = pos_volumetria[0]
-linha_volumetria_peso = pos_volumetria[0] + 1
-coluna_inicio_vol = pos_volumetria[1] + 1
-
-servicos_vol_raw = fonte_outros.iloc[linha_servicos_vol, coluna_inicio_vol:].values
-volumetria_raw = fonte_outros.iloc[linha_volumetria, coluna_inicio_vol:].values
-volumetria_peso_raw = fonte_outros.iloc[linha_volumetria_peso, coluna_inicio_vol:].values
-
-servicos_vol = []
-for idx, srv in enumerate(servicos_vol_raw):
-    if pd.isna(srv) or str(srv).strip() == "":
-        break
-    servicos_vol.append({
-        "Servico": str(srv).strip().upper(),
-        "Volumetria": safe_number(volumetria_raw[idx]) if idx < len(volumetria_raw) else None,
-        "Volumetria_Com_Peso": safe_number(volumetria_peso_raw[idx]) if idx < len(volumetria_peso_raw) else None
-    })
-
-tbl_volumetria = pd.DataFrame(servicos_vol)
-
-tabela_final = tabela_final.merge(
-    tbl_volumetria[["Servico", "Volumetria", "Volumetria_Com_Peso"]],
-    on="Servico",
-    how="left"
-)
-
-print(f"Volumetria: {len(tbl_volumetria)} serviços")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## CUSTO DE OUTROS (Validação - 3 rótulos somados)
-
-# COMMAND ----------
-
-rotulos_outros = [
-    "CUSTO DE OUTROS -  Robo - UN02",
-    "CUSTO DE OUTROS -  Robo - UN03",
-    "CUSTO DE OUTROS -  Robo - UN12",
-]
-
-soma_custo_outros = 0
-for rotulo in rotulos_outros:
-    valor = get_value_after_label(fonte_outros, rotulo)
-    if valor is not None:
-        num = safe_number(valor)
-        if num is not None:
-            soma_custo_outros += num
-    print(f"  {rotulo}: {valor}")
-
-soma_valor_calculado = tabela_final["Valor"].sum()
-
-validacao = (
-    round(soma_valor_calculado, 2) == round(soma_custo_outros, 2)
-    if soma_custo_outros is not None
-    else False
-)
-
-print(f"\nSoma Custo Outros: {soma_custo_outros:.2f}")
-print(f"Soma Calculada: {soma_valor_calculado:.2f}")
-print(f"Validação: {validacao}")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## BASE FINANCEIRA (aba $)
-
-# COMMAND ----------
-
-base_financeira_bruto = get_value_after_label(fonte_valor_dolar, "Base Financeira:")
-
-if base_financeira_bruto is not None:
-    try:
-        if isinstance(base_financeira_bruto, (datetime, pd.Timestamp)):
-            data_base = pd.Timestamp(base_financeira_bruto)
-        else:
-            data_base = pd.to_datetime(base_financeira_bruto)
-        mes_ano_base = data_base.strftime("%m/%Y")
-    except Exception:
-        data_base = None
-        mes_ano_base = None
-else:
-    data_base = None
-    mes_ano_base = None
-
-print(f"Base Financeira: {data_base}")
-print(f"Mês/Ano Base: {mes_ano_base}")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## BASE OPERACIONAL (aba $)
-
-# COMMAND ----------
-
-base_operacional_bruto = get_value_after_label(fonte_valor_dolar, "Base Operacional:")
-
-if base_operacional_bruto is not None:
-    try:
-        if isinstance(base_operacional_bruto, (datetime, pd.Timestamp)):
-            data_operacional = pd.Timestamp(base_operacional_bruto)
-        else:
-            data_operacional = pd.to_datetime(base_operacional_bruto)
-        mes_ano_operacional = data_operacional.strftime("%m/%Y")
-    except Exception:
-        data_operacional = None
-        mes_ano_operacional = None
-else:
-    data_operacional = None
-    mes_ano_operacional = None
-
-print(f"Base Operacional: {data_operacional}")
-print(f"Mês/Ano Operacional: {mes_ano_operacional}")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Colunas Finais
-
-# COMMAND ----------
-
-tabela_final["MesAnoOperacional"] = mes_ano_operacional
-tabela_final["MesAnoBase"] = mes_ano_base
-tabela_final["ValidacaoOutros"] = validacao
-
-tabela_final.drop(columns=["Servico_Norm"], inplace=True, errors="ignore")
-
-tabela_final.sort_values(by="CentroCusto", ascending=True, inplace=True)
-tabela_final.reset_index(drop=True, inplace=True)
-
-tabela_final["Peso"] = pd.to_numeric(tabela_final["Peso"], errors="coerce")
-tabela_final["Peso_Formacao"] = pd.to_numeric(tabela_final["Peso_Formacao"], errors="coerce")
-tabela_final["Quantidade"] = pd.to_numeric(tabela_final["Quantidade"], errors="coerce")
-tabela_final["Valor"] = pd.to_numeric(tabela_final["Valor"], errors="coerce")
-tabela_final["Volumetria"] = pd.to_numeric(tabela_final["Volumetria"], errors="coerce")
-tabela_final["Volumetria_Com_Peso"] = pd.to_numeric(tabela_final["Volumetria_Com_Peso"], errors="coerce")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Resultado Final
-
-# COMMAND ----------
-
-print(f"Total de linhas: {len(tabela_final)}")
-print(f"Colunas: {list(tabela_final.columns)}")
-display(tabela_final)
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Checklist de Validação
-
-# COMMAND ----------
-
-checklist = {
-    "TABELA DE PREÇOS NO PERIODO encontrado": pos_tabela_precos is not None,
-    "Serviços extraídos": len(tbl_servicos) > 0,
-    "Rótulos de Linha encontrado": pos_rotulos is not None,
-    "Centros de Custo extraídos": len(centros_custo) > 0,
-    "FORMAÇÃO DE PREÇOS NO PERIODO encontrado": pos_formacao is not None,
-    "VOLUMETRIA NO PERIODO encontrado": pos_volumetria is not None,
-    "Base Financeira encontrada": base_financeira_bruto is not None,
-    "Base Operacional encontrada": base_operacional_bruto is not None,
-    "Validação Outros": validacao
-}
-
-for item, ok in checklist.items():
-    status = "✓" if ok else "✗"
-    print(f"  {status} {item}")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Exportar (opcional)
-
-# COMMAND ----------
-
-# tabela_final.write.format("delta").mode("overwrite").saveAsTable("tabela_outros")
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <radialGradient id="bg" cx="65%" cy="50%" r="85%">
+      <stop offset="0%" stop-color="#0a1a0a"/>
+      <stop offset="60%" stop-color="#050f05"/>
+      <stop offset="100%" stop-color="#020402"/>
+    </radialGradient>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="4" result="b1"/>
+      <feGaussianBlur stdDeviation="9" in="SourceGraphic" result="b2"/>
+      <feGaussianBlur stdDeviation="16" in="SourceGraphic" result="b3"/>
+      <feMerge>
+        <feMergeNode in="b3"/>
+        <feMergeNode in="b2"/>
+        <feMergeNode in="b1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glowSoft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b1"/>
+      <feMerge>
+        <feMergeNode in="b1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="fadeR" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00ff41" stop-opacity="0"/>
+      <stop offset="40%" stop-color="#00ff41" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#00ff41" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="fadeD" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00ff41" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#00ff41" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#00ff41" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Fundo -->
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <!-- ============================================ -->
+  <!-- BORDA EXTERNA -->
+  <!-- ============================================ -->
+  <g filter="url(#glow)">
+    <line x1="40" y1="40" x2="1880" y2="40" stroke="#00ff41" stroke-width="5" opacity="0.5"/>
+    <line x1="40" y1="1040" x2="1880" y2="1040" stroke="#00ff41" stroke-width="5" opacity="0.5"/>
+    <line x1="40" y1="40" x2="40" y2="1040" stroke="#00ff41" stroke-width="5" opacity="0.5"/>
+    <line x1="1880" y1="40" x2="1880" y2="1040" stroke="#00ff41" stroke-width="5" opacity="0.5"/>
+  </g>
+  <!-- Cantos -->
+  <g filter="url(#glow)" stroke="#00ff41" fill="none" stroke-width="5.5" opacity="0.7">
+    <polyline points="20,20 20,110"/>
+    <polyline points="20,20 110,20"/>
+    <circle cx="20" cy="20" r="5" fill="#00ff41"/>
+    <polyline points="1900,20 1900,110"/>
+    <polyline points="1900,20 1810,20"/>
+    <circle cx="1900" cy="20" r="5" fill="#00ff41"/>
+    <polyline points="20,1060 20,970"/>
+    <polyline points="20,1060 110,1060"/>
+    <circle cx="20" cy="1060" r="5" fill="#00ff41"/>
+    <polyline points="1900,1060 1900,970"/>
+    <polyline points="1900,1060 1810,1060"/>
+    <circle cx="1900" cy="1060" r="5" fill="#00ff41"/>
+  </g>
+  <!-- ============================================ -->
+  <!-- LINHA DE MEIO DE CAMPO -->
+  <!-- ============================================ -->
+  <line x1="960" y1="40" x2="960" y2="1040" stroke="#00ff41" stroke-width="5" filter="url(#glow)" opacity="0.5"/>
+  <!-- ============================================ -->
+  <!-- CIRCULO CENTRAL (mesma espessura da borda) -->
+  <!-- ============================================ -->
+  <circle cx="960" cy="540" r="150" fill="none" stroke="#00ff41" stroke-width="5" filter="url(#glow)" opacity="0.45"/>
+  <circle cx="960" cy="540" r="5" fill="#00ff41" filter="url(#glow)" opacity="0.5"/>
+</svg>
