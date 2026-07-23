@@ -1641,17 +1641,47 @@ body {
     .work-cards { grid-template-columns: 1fr; }
     .portfolio-cards { grid-template-columns: 1fr; }
         
-    .project-card { height: auto; min-height: 320px; }
-    .project-card .project-info {
-        opacity: 1;
-        transform: translateY(0);
-        position: relative;
-        background: linear-gradient(180deg, rgba(6, 6, 14, 0) 0%, rgba(6, 6, 14, 0.92) 40%);
-        padding: 80px 30px 30px;
+    .project-card { height: auto; }
+    .project-card .project-img {
+        height: 220px;
+        object-fit: cover;
+        display: block;
     }
+    .project-card .project-overlay {
+        background: linear-gradient(180deg, rgba(6, 6, 14, 0) 50%, rgba(6, 6, 14, 0.95) 100%);
+    }
+    .project-card .project-data {
+        position: absolute;
+        bottom: auto;
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 16px 20px;
+        z-index: 2;
+    }
+    .project-card .project-data .category { margin-bottom: 4px; }
+    .project-card .project-data h3 { font-size: 18px; }
+    .project-card .project-data .tech-tags { margin-top: 8px; }
+    .project-card .project-data .tech-tag {
+        background: rgba(0, 0, 0, 0.5);
+        border-color: rgba(0, 212, 255, 0.5);
+        font-size: 9px;
+        padding: 3px 8px;
+    }
+    .project-card .project-info {
+        position: relative;
+        opacity: 1;
+        transform: none;
+        padding: 0 20px 20px;
+        background: var(--bg-primary);
+        border-top: 1px solid var(--border);
+        }
+    .project-card .project-info h3 { display: none; }
+    .project-card .project-info .tech-tags { display: none; }
+    .project-card .project-info p { font-size: 13px; margin-bottom: 16px; }
     .project-card:hover { transform: none; box-shadow: none; }
     .project-card:hover .project-img { transform: none; }
-    .project-card .project-data { display: none; }
 
     .about-hero { min-height: 35vh; padding: 120px 6% 40px; }
     .about-hero-content h1 { font-size: 36px; }
@@ -1677,5 +1707,6 @@ body {
     
     .home-content h1 { font-size: 30px; }
     .about-right { grid-template-columns: 1fr; }
-    .project-card .project-info { padding: 60px 20px 20px; }
+    .project-card .project-img { height: 180px; }
+    .project-card .project-info p { font-size: 12px; }
 }
