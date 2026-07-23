@@ -1682,7 +1682,19 @@ body {
         justify-content: initial;
         }
     .project-card .project-info h3 { display: none; }
-    .project-card .project-info .tech-tags { display: none; }
+    .project-card .project-info .tech-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 16px;
+    }
+    .project-card .project-info .tech-tag {
+        font-size: 9px;
+        padding: 3px 8px;
+        border-color: rgba(0, 212, 255, 0.4);
+        color: var(--neon-blue);
+        background: rgba(0, 212, 255, 0.08);
+    }
     .project-card .project-info p { font-size: 13px; margin-bottom: 16px; }
     .project-card:hover { transform: none; box-shadow: none; }
     .project-card:hover .project-img { transform: none; }
