@@ -66,6 +66,19 @@ document.addEventListener('DOMContentLoaded', () => {
         cardObserver.observe(el);
     });
 
+    // Mobile: tap project card → navigate to link directly
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            const link = card.querySelector('.project-link');
+            if (link && link.href && link.href !== '#' && link.href !== window.location.href + '#') {
+                if (window.innerWidth <= 768 || 'ontouchstart' in window) {
+                    e.preventDefault();
+                    window.open(link.href, '_blank');
+                }
+            }
+        });
+    });
+
     const header = document.querySelector('.header');
     window.addEventListener('scroll', () => {
         const currentScroll = window.scrollY;
