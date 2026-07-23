@@ -1671,11 +1671,15 @@ body {
     }
     .project-card .project-info {
         position: relative;
+        inset: auto;
         opacity: 1;
         transform: none;
         padding: 0 20px 20px;
         background: var(--bg-primary);
         border-top: 1px solid var(--border);
+        backdrop-filter: none;
+        display: block;
+        justify-content: initial;
         }
     .project-card .project-info h3 { display: none; }
     .project-card .project-info .tech-tags { display: none; }
