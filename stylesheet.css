@@ -761,6 +761,42 @@ body {
     margin-bottom: 24px;
 }
 
+.project-data .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.project-data .tech-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    color: var(--neon-blue);
+    background: rgba(0, 212, 255, 0.08);
+    letter-spacing: 0.5px;
+}
+
+.project-info .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.project-info .tech-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(232, 213, 183, 0.3);
+    color: var(--neon-beige);
+    background: rgba(232, 213, 183, 0.08);
+    letter-spacing: 0.5px;
+}
+
 .project-link {
     display: inline-flex;
     align-items: center;
